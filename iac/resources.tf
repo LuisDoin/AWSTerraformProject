@@ -1,6 +1,14 @@
+# ---------------------------------------------------------------------------------------------------------------------
+# SNS TOPIC
+# ---------------------------------------------------------------------------------------------------------------------
+
 resource "aws_sns_topic" "event_sns" {
     name = "event-sns"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SQS QUEUE
+# ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_sqs_queue" "event_sqs" {
     name = "event-sqs"
@@ -16,11 +24,19 @@ resource "aws_sqs_queue" "event_sqs_dlq" {
     name = "event-sqs-dlq"
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# SNS SUBSCRIPTION
+# ---------------------------------------------------------------------------------------------------------------------
+
 resource "aws_sns_topic_subscription" "event_sqs_target" {
     topic_arn = "${aws_sns_topic.event_sns.arn}"
     protocol  = "sqs"
     endpoint  = "${aws_sqs_queue.event_sqs.arn}"
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SQS POLICY
+# ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_sqs_queue_policy" "event_sqs_policy" {
     queue_url = "${aws_sqs_queue.event_sqs.id}"
@@ -50,7 +66,6 @@ POLICY
 resource "random_uuid" "bucket_random_id" {
 }
 
-# Create S3 bucket to store our application source code.
 resource "aws_s3_bucket" "lambda_bucket" {
   bucket                = "${random_uuid.bucket_random_id.result}-dotnet-tf-bucket"
   force_destroy         = true
@@ -78,6 +93,29 @@ resource "aws_cloudwatch_log_group" "aggregator" {
   retention_in_days = 30
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# LAMBDA FUNCTION
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_lambda_function" "function" {
+  function_name    = "event-listener"
+  s3_bucket        = aws_s3_bucket.lambda_bucket.id
+  s3_key           = aws_s3_object.lambda_bundle.key
+  runtime          = "dotnet6"
+  handler          = "EventListener::EventListener.Function::FunctionHandler"
+  source_code_hash = data.archive_file.lambda_archive.output_base64sha256
+  role             = aws_iam_role.lambda_function_role.arn
+  timeout          = 30
+}
+
+output "function_name" {
+  value = aws_lambda_function.function.function_name
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# LAMBDA ROLE & POLICIES
+# ---------------------------------------------------------------------------------------------------------------------
+
 resource "aws_iam_role" "lambda_function_role" {
   name = "FunctionIamRole_event-listener"
   assume_role_policy = jsonencode({
@@ -97,21 +135,6 @@ resource "aws_iam_role" "lambda_function_role" {
 resource "aws_iam_role_policy_attachment" "lambda_policy_attach" {
   role       = aws_iam_role.lambda_function_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-resource "aws_lambda_function" "function" {
-  function_name    = "event-listener"
-  s3_bucket        = aws_s3_bucket.lambda_bucket.id
-  s3_key           = aws_s3_object.lambda_bundle.key
-  runtime          = "dotnet6"
-  handler          = "EventListener::EventListener.Function::FunctionHandler"
-  source_code_hash = data.archive_file.lambda_archive.output_base64sha256
-  role             = aws_iam_role.lambda_function_role.arn
-  timeout          = 30
-}
-
-output "function_name" {
-  value = aws_lambda_function.function.function_name
 }
 
 resource "aws_iam_role_policy" "lambda_role_sqs_policy" {
@@ -156,6 +179,10 @@ resource "aws_iam_role_policy" "lambda_role_logs_policy" {
 }
 EOF
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# LAMBDA EVENT SOURCE
+# ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_lambda_event_source_mapping" "event_listener_event_source" {
     event_source_arn = "${aws_sqs_queue.event_sqs.arn}"
