@@ -190,3 +190,41 @@ resource "aws_lambda_event_source_mapping" "event_listener_event_source" {
     function_name    = "${aws_lambda_function.function.arn}"
     batch_size       = 1
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# DynamoDB Table
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_dynamodb_table" "event_storage" {
+  name           = "event_storage"
+  billing_mode   = "PAY_PER_REQUEST"
+
+  attribute {
+    name = "ItemId"
+    type = "S"
+  }
+
+  hash_key = "ItemId"
+}
+
+resource "aws_iam_role_policy" "lambda_role_dynamodb_policy" {
+  name = "LambdaDynamoDBPolicy"
+  role = aws_iam_role.lambda_function_role.name
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:PutItem",
+        "dynamodb:GetItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:BatchWriteItem"
+      ],
+      "Resource": "${aws_dynamodb_table.event_storage.arn}"
+    }
+  ]
+}
+EOF
+}
