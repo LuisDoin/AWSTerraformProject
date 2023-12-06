@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "JZdd5cncqGZwWgIgNTMsVeEJ3L46c60N+56tHbS0djYirJtGci56QJs8bDFzOU542QUHR7O2/Xro/uEbFBmPSA==",
+  "success": true,
+  "projectFilePath": "/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/EventListenerLambda.csproj",
+  "expectedPackageFiles": [
+    "/Users/luis.doin/.nuget/packages/amazon.lambda.core/2.2.0/amazon.lambda.core.2.2.0.nupkg.sha512",
+    "/Users/luis.doin/.nuget/packages/amazon.lambda.serialization.systemtextjson/2.4.0/amazon.lambda.serialization.systemtextjson.2.4.0.nupkg.sha512",
+    "/Users/luis.doin/.nuget/packages/amazon.lambda.sqsevents/2.2.0/amazon.lambda.sqsevents.2.2.0.nupkg.sha512",
+    "/Users/luis.doin/.nuget/packages/microsoft.netcore.app.runtime.linux-x64/6.0.19/microsoft.netcore.app.runtime.linux-x64.6.0.19.nupkg.sha512",
+    "/Users/luis.doin/.nuget/packages/microsoft.aspnetcore.app.runtime.linux-x64/6.0.19/microsoft.aspnetcore.app.runtime.linux-x64.6.0.19.nupkg.sha512",
+    "/Users/luis.doin/.nuget/packages/microsoft.netcore.app.crossgen2.osx-arm64/6.0.19/microsoft.netcore.app.crossgen2.osx-arm64.6.0.19.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -1,0 +1,220 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Amazon.Lambda.Core/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Amazon.Lambda.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Amazon.Lambda.Core.dll": {}
+        }
+      },
+      "Amazon.Lambda.Serialization.SystemTextJson/2.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.2.0"
+        },
+        "compile": {
+          "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {}
+        }
+      },
+      "Amazon.Lambda.SQSEvents/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.dll": {}
+        }
+      }
+    },
+    "net6.0/linux-x64": {
+      "Amazon.Lambda.Core/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Amazon.Lambda.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Amazon.Lambda.Core.dll": {}
+        }
+      },
+      "Amazon.Lambda.Serialization.SystemTextJson/2.4.0": {
+        "type": "package",
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.2.0"
+        },
+        "compile": {
+          "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll": {}
+        }
+      },
+      "Amazon.Lambda.SQSEvents/2.2.0": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Amazon.Lambda.Core/2.2.0": {
+      "sha512": "DHqKeD1CYocP0t1dJC/NaXfu+5k6AoqnQ1Hlu/J2mXpLpCyeJfY+tIqT5fpruDarUlU0NtdIH8zSkCjeinyb1A==",
+      "type": "package",
+      "path": "amazon.lambda.core/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "amazon.lambda.core.2.2.0.nupkg.sha512",
+        "amazon.lambda.core.nuspec",
+        "lib/net6.0/Amazon.Lambda.Core.dll",
+        "lib/net6.0/Amazon.Lambda.Core.xml",
+        "lib/net8.0/Amazon.Lambda.Core.dll",
+        "lib/net8.0/Amazon.Lambda.Core.xml",
+        "lib/netstandard2.0/Amazon.Lambda.Core.dll",
+        "lib/netstandard2.0/Amazon.Lambda.Core.xml"
+      ]
+    },
+    "Amazon.Lambda.Serialization.SystemTextJson/2.4.0": {
+      "sha512": "VwHKBvAD3ivAoAYjRNy/LsZaoFayKAWhVYOTYur5UQZzxYCC6itTwBH5skt3l8FCIjOAGnZljHNnayu17Y53jw==",
+      "type": "package",
+      "path": "amazon.lambda.serialization.systemtextjson/2.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "amazon.lambda.serialization.systemtextjson.2.4.0.nupkg.sha512",
+        "amazon.lambda.serialization.systemtextjson.nuspec",
+        "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.dll",
+        "lib/net6.0/Amazon.Lambda.Serialization.SystemTextJson.xml",
+        "lib/net8.0/Amazon.Lambda.Serialization.SystemTextJson.dll",
+        "lib/net8.0/Amazon.Lambda.Serialization.SystemTextJson.xml",
+        "lib/netcoreapp3.1/Amazon.Lambda.Serialization.SystemTextJson.dll",
+        "lib/netcoreapp3.1/Amazon.Lambda.Serialization.SystemTextJson.xml"
+      ]
+    },
+    "Amazon.Lambda.SQSEvents/2.2.0": {
+      "sha512": "RyYLgEa6nh+VJrCfTDKxvTLS1+eLDIIDyHgwDY3TR1WQz1+UeDIcccOJvoDk2nmjkSA0TfWJmZX9Ld0ySf57lA==",
+      "type": "package",
+      "path": "amazon.lambda.sqsevents/2.2.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "amazon.lambda.sqsevents.2.2.0.nupkg.sha512",
+        "amazon.lambda.sqsevents.nuspec",
+        "lib/net8.0/Amazon.Lambda.SQSEvents.dll",
+        "lib/net8.0/Amazon.Lambda.SQSEvents.xml",
+        "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.dll",
+        "lib/netcoreapp3.1/Amazon.Lambda.SQSEvents.xml",
+        "lib/netstandard2.0/Amazon.Lambda.SQSEvents.dll",
+        "lib/netstandard2.0/Amazon.Lambda.SQSEvents.xml"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Amazon.Lambda.Core >= 2.2.0",
+      "Amazon.Lambda.SQSEvents >= 2.2.0",
+      "Amazon.Lambda.Serialization.SystemTextJson >= 2.4.0"
+    ]
+  },
+  "packageFolders": {
+    "/Users/luis.doin/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/EventListenerLambda.csproj",
+      "projectName": "EventListenerLambda",
+      "projectPath": "/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/EventListenerLambda.csproj",
+      "packagesPath": "/Users/luis.doin/.nuget/packages/",
+      "outputPath": "/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/luis.doin/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {},
+        "https://cko-packages-791259062566.d.codeartifact.eu-west-1.amazonaws.com/nuget/cko-packages/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "Amazon.Lambda.Core": {
+            "target": "Package",
+            "version": "[2.2.0, )"
+          },
+          "Amazon.Lambda.SQSEvents": {
+            "target": "Package",
+            "version": "[2.2.0, )"
+          },
+          "Amazon.Lambda.Serialization.SystemTextJson": {
+            "target": "Package",
+            "version": "[2.4.0, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+            "version": "[6.0.19, 6.0.19]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Crossgen2.osx-arm64",
+            "version": "[6.0.19, 6.0.19]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+            "version": "[6.0.19, 6.0.19]"
+          }
+        ],
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.119/RuntimeIdentifierGraph.json"
+      }
+    },
+    "runtimes": {
+      "linux-x64": {
+        "#import": []
+      }
+    }
+  }
+}
