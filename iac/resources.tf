@@ -220,7 +220,8 @@ resource "aws_iam_role_policy" "lambda_role_dynamodb_policy" {
         "dynamodb:PutItem",
         "dynamodb:GetItem",
         "dynamodb:UpdateItem",
-        "dynamodb:BatchWriteItem"
+        "dynamodb:BatchWriteItem",
+        "dynamodb:DescribeTable"
       ],
       "Resource": "${aws_dynamodb_table.event_storage.arn}"
     }

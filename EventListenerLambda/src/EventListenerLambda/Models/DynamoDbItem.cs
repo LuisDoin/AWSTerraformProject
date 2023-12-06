@@ -4,13 +4,7 @@ namespace EventListenerLambda.Models;
 
 public class DynamoDbItem
 {
-    public DynamoDbItem(string itemId, string message)
-    {
-        ItemId = itemId;
-        Message = message;
-    }
-
-    [DynamoDBHashKey(AttributeName = "PK")]
+    [DynamoDBHashKey(AttributeName = "ItemId")]
     public string ItemId { get; set; }
 
     public string Message { get; set; }

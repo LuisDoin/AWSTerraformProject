@@ -5,6 +5,7 @@ using Amazon.Runtime.Internal.Util;
 using EventListenerLambda.Models;
 using EventListenerLambda.Startup;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -53,9 +54,11 @@ public class Function
     {
         context.Logger.LogInformation($"Processing message {message.Body}");
 
-        await _dynamoDbContext.SaveAsync(new DynamoDbItem(Guid.NewGuid().ToString(), message.Body), new DynamoDBOperationConfig
+        var envelope = JsonConvert.DeserializeObject<SNSEnvelope>(message.Body);
+        
+        await _dynamoDbContext.SaveAsync(new DynamoDbItem { ItemId = Guid.NewGuid().ToString(), Message = envelope.Message }, new DynamoDBOperationConfig
         {
-            OverrideTableName = DynamoDbTable,
+            OverrideTableName = "event_storage",
             ConsistentRead = true
         });
         
