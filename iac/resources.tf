@@ -7,6 +7,35 @@ resource "aws_sns_topic" "event_sns" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
+# KMS Key
+# ---------------------------------------------------------------------------------------------------------------------
+
+
+resource "aws_kms_key" "sqs_kms" {
+  description = "sqs_kms"
+}
+
+resource "aws_kms_key_policy" "example" {
+  key_id = aws_kms_key.sqs_kms.id
+  policy = jsonencode({
+    Id = "example"
+    Statement = [
+      {
+        Action = "kms:*"
+        Effect = "Allow"
+        Principal = {
+          AWS = "*"
+        }
+
+        Resource = "*"
+        Sid      = "Enable IAM User Permissions"
+      },
+    ]
+    Version = "2012-10-17"
+  })
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # SQS QUEUE
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -14,6 +43,7 @@ resource "aws_sqs_queue" "event_sqs" {
     name = "event-sqs"
     redrive_policy  = "{\"deadLetterTargetArn\":\"${aws_sqs_queue.event_sqs_dlq.arn}\",\"maxReceiveCount\":5}"
     visibility_timeout_seconds = 300
+    kms_master_key_id = aws_kms_key.sqs_kms.id
 
     tags = {
         Environment = "dev"
@@ -153,6 +183,13 @@ resource "aws_iam_role_policy" "lambda_role_sqs_policy" {
       ],
       "Effect": "Allow",
       "Resource": "*"
+    },
+    {
+       "Action": [
+         "kms:Decrypt"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"  
     }
   ]
 }
