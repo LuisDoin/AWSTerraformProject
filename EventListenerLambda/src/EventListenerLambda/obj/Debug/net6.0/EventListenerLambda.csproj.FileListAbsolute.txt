@@ -16,3 +16,7 @@
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Debug/net6.0/ref/EventListenerLambda.dll
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Debug/net6.0/EventListenerLambda.pdb
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Debug/net6.0/EventListenerLambda.genruntimeconfig.cache
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Debug/net6.0/AWSSDK.Core.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Debug/net6.0/AWSSDK.DynamoDBv2.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Debug/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll

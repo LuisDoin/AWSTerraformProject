@@ -8,9 +8,11 @@
     ".NETCoreApp,Version=v6.0": {
       "EventListenerLambda/1.0.0": {
         "dependencies": {
+          "AWSSDK.DynamoDBv2": "3.7.300.14",
           "Amazon.Lambda.Core": "2.2.0",
           "Amazon.Lambda.SQSEvents": "2.2.0",
-          "Amazon.Lambda.Serialization.SystemTextJson": "2.4.0"
+          "Amazon.Lambda.Serialization.SystemTextJson": "2.4.0",
+          "Microsoft.Extensions.DependencyInjection": "8.0.0"
         },
         "runtime": {
           "EventListenerLambda.dll": {}
@@ -42,6 +44,44 @@
             "fileVersion": "1.0.0.0"
           }
         }
+      },
+      "AWSSDK.Core/3.7.300.14": {
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.300.14"
+          }
+        }
+      },
+      "AWSSDK.DynamoDBv2/3.7.300.14": {
+        "dependencies": {
+          "AWSSDK.Core": "3.7.300.14"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.DynamoDBv2.dll": {
+            "assemblyVersion": "3.3.0.0",
+            "fileVersion": "3.7.300.14"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection/8.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "8.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
+      },
+      "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.53103"
+          }
+        }
       }
     }
   },
@@ -71,6 +111,34 @@
       "sha512": "sha512-RyYLgEa6nh+VJrCfTDKxvTLS1+eLDIIDyHgwDY3TR1WQz1+UeDIcccOJvoDk2nmjkSA0TfWJmZX9Ld0ySf57lA==",
       "path": "amazon.lambda.sqsevents/2.2.0",
       "hashPath": "amazon.lambda.sqsevents.2.2.0.nupkg.sha512"
+    },
+    "AWSSDK.Core/3.7.300.14": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bIIhSh1uANCy4xIzlHAPEPlpADwDFZg5/8XBUuUQVCEwOtcTPlLxqY5KE5dnerlFUjCdrSeo/tLG5kk4jQRkTA==",
+      "path": "awssdk.core/3.7.300.14",
+      "hashPath": "awssdk.core.3.7.300.14.nupkg.sha512"
+    },
+    "AWSSDK.DynamoDBv2/3.7.300.14": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-y+m1Ad/OZcfIjkMzed1kDPSqE5H07P5VeoZiEAWWtafZqFyne6XvrYwFVRatZgNyJRdnjuHuCeqINds9Wlm8LQ==",
+      "path": "awssdk.dynamodbv2/3.7.300.14",
+      "hashPath": "awssdk.dynamodbv2.3.7.300.14.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-V8S3bsm50ig6JSyrbcJJ8bW2b9QLGouz+G1miK3UTaOWmMtFwNNNzUf4AleyDWUmTrWMLNnFSLEQtxmxgNQnNQ==",
+      "path": "microsoft.extensions.dependencyinjection/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cjWrLkJXK0rs4zofsK4bSdg+jhDLTaxrkXu4gS6Y7MAlCvRyNNgwY/lJi5RDlQOnSZweHqoyvgvbdvQsRIW+hg==",
+      "path": "microsoft.extensions.dependencyinjection.abstractions/8.0.0",
+      "hashPath": "microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
     }
   }
 }

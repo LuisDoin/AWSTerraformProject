@@ -183,4 +183,9 @@
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Amazon.Lambda.Core.dll
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Amazon.Lambda.Serialization.SystemTextJson.dll
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Amazon.Lambda.SQSEvents.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/AWSSDK.Core.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/AWSSDK.DynamoDBv2.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Microsoft.Extensions.DependencyInjection.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/Newtonsoft.Json.dll
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/publish/EventListenerLambda.dll

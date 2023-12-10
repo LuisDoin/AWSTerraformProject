@@ -195,3 +195,8 @@
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Release/net6.0/linux-x64/ref/EventListenerLambda.dll
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Release/net6.0/linux-x64/EventListenerLambda.pdb
 /Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/obj/Release/net6.0/linux-x64/EventListenerLambda.genruntimeconfig.cache
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/AWSSDK.Core.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/AWSSDK.DynamoDBv2.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/Microsoft.Extensions.DependencyInjection.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/Microsoft.Extensions.DependencyInjection.Abstractions.dll
+/Users/luis.doin/RiderProjects/AWSTerraformProject/EventListenerLambda/src/EventListenerLambda/bin/Release/net6.0/linux-x64/Newtonsoft.Json.dll
