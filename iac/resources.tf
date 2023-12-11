@@ -7,18 +7,18 @@ resource "aws_sns_topic" "event_sns" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# KMS Key
+# KMS KEY
 # ---------------------------------------------------------------------------------------------------------------------
 
 
-resource "aws_kms_key" "sqs_kms" {
-  description = "sqs_kms"
+resource "aws_kms_key" "kms_key" {
+  description = "kms-key"
 }
 
-resource "aws_kms_key_policy" "example" {
-  key_id = aws_kms_key.sqs_kms.id
+resource "aws_kms_key_policy" "kms_policy" {
+  key_id = aws_kms_key.kms_key.id
   policy = jsonencode({
-    Id = "example"
+    Id = "kmsId"
     Statement = [
       {
         Action = "kms:*"
@@ -43,7 +43,7 @@ resource "aws_sqs_queue" "event_sqs" {
     name = "event-sqs"
     redrive_policy  = "{\"deadLetterTargetArn\":\"${aws_sqs_queue.event_sqs_dlq.arn}\",\"maxReceiveCount\":5}"
     visibility_timeout_seconds = 300
-    kms_master_key_id = aws_kms_key.sqs_kms.id
+    kms_master_key_id = aws_kms_key.kms_key.id
 
     tags = {
         Environment = "dev"
@@ -93,14 +93,6 @@ resource "aws_sqs_queue_policy" "event_sqs_policy" {
 POLICY
 }
 
-resource "random_uuid" "bucket_random_id" {
-}
-
-resource "aws_s3_bucket" "lambda_bucket" {
-  bucket                = "${random_uuid.bucket_random_id.result}-dotnet-tf-bucket"
-  force_destroy         = true
-}
-
 data "archive_file" "lambda_archive" {
   type = "zip"
 
@@ -136,10 +128,6 @@ resource "aws_lambda_function" "function" {
   source_code_hash = data.archive_file.lambda_archive.output_base64sha256
   role             = aws_iam_role.lambda_function_role.arn
   timeout          = 30
-}
-
-output "function_name" {
-  value = aws_lambda_function.function.function_name
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -240,8 +228,6 @@ resource "aws_dynamodb_table" "event_storage" {
     name = "ItemId"
     type = "S"
   }
-
-  hash_key = "ItemId"
 }
 
 resource "aws_iam_role_policy" "lambda_role_dynamodb_policy" {
@@ -265,4 +251,142 @@ resource "aws_iam_role_policy" "lambda_role_dynamodb_policy" {
   ]
 }
 EOF
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Kinesis Stream
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_kinesis_stream" "kinesis_event_stream" {
+  name        = "kinesis_event_stream"
+  shard_count = 1
+}
+
+resource "aws_dynamodb_kinesis_streaming_destination" "kinesis_event_stream_destination" {
+  stream_arn = aws_kinesis_stream.kinesis_event_stream.arn
+  table_name = aws_dynamodb_table.event_storage.name
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Kinesis Data Firehose Delivery Stream
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_kinesis_firehose_delivery_stream" "event_delivery_stream" {
+  name        = "event_delivery_stream"
+  destination = "s3"
+
+  s3_configuration {
+    role_arn = aws_iam_role.firehose_role.arn
+    bucket_arn = aws_s3_bucket.events_bucket.arn
+    prefix    = "events/"
+  }
+
+  kinesis_source_configuration {
+    kinesis_stream_arn = aws_kinesis_stream.kinesis_event_stream.arn
+    role_arn           = aws_iam_role.firehose_role.arn
+  }
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# IAM Role for Kinesis Data Firehose
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_iam_role" "firehose_role" {
+  name = "KinesisFirehoseRole"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "firehose.amazonaws.com"
+      }
+    }]
+  })
+}
+
+resource "aws_iam_role_policy" "firehose_kinesis_policy" {
+  name = "FirehoseKinesisPolicy"
+  role = aws_iam_role.firehose_role.name
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "*",
+      "Resource": "${aws_kinesis_stream.kinesis_event_stream.arn}"
+    },
+    {
+       "Action": [
+         "kms:Decrypt"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"  
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "firehose_s3_policy" {
+  name = "FirehoseS3Policy"
+  role = aws_iam_role.firehose_role.name
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "s3:AbortMultipartUpload",
+        "s3:GetBucketLocation",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:PutObject",
+        "s3:ListMultipartUploadParts"
+      ],
+      "Resource": [
+        "${aws_s3_bucket.events_bucket.arn}",
+        "${aws_s3_bucket.events_bucket.arn}/*"
+      ]
+    },
+    {
+       "Action": [
+         "kms:Decrypt"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"  
+    }
+  ]
+}
+EOF
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# S3 Bucket 
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_s3_bucket" "events_bucket" {
+  bucket = "cko-project-events-bucket"
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "events_bucket_encryption" {
+  bucket = aws_s3_bucket.events_bucket.id
+
+  rule {
+    apply_server_side_encryption_by_default {
+      kms_master_key_id = aws_kms_key.kms_key.arn
+      sse_algorithm     = "aws:kms"
+    }
+  }
+}
+
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket                = "cko-project-lambda-bucket"
+  force_destroy         = true
 }
