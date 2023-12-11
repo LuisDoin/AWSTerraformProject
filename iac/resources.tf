@@ -36,7 +36,7 @@ resource "aws_kms_key" "kms_key" {
 resource "aws_kms_key_policy" "kms_policy" {
   key_id = aws_kms_key.kms_key.id
   policy = jsonencode({
-    Id = "kmsId"
+    Id = "kmsid"
     Statement = [
       {
         Action = "kms:*"
@@ -92,6 +92,21 @@ resource "aws_sqs_queue_policy" "event_sqs_policy" {
 POLICY
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# LAMBDA FUNCTION
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_lambda_function" "event_listener" {
+  function_name    = "event-listener"
+  s3_bucket        = aws_s3_bucket.lambda_bucket.id
+  s3_key           = aws_s3_object.lambda_bundle.key
+  runtime          = "dotnet6"
+  handler          = "EventListenerLambda::EventListenerLambda.Function::FunctionHandler"
+  source_code_hash = data.archive_file.lambda_archive.output_base64sha256
+  role             = aws_iam_role.lambda_function_role.arn
+  timeout          = 30
+}
+
 data "archive_file" "lambda_archive" {
   type = "zip"
 
@@ -108,25 +123,10 @@ resource "aws_s3_object" "lambda_bundle" {
   etag = filemd5(data.archive_file.lambda_archive.output_path)
 }
 
-resource "aws_cloudwatch_log_group" "aggregator" {
-  name = "/aws/lambda/${aws_lambda_function.function.function_name}"
+resource "aws_cloudwatch_log_group" "event_listener_log_group" {
+  name = "/aws/lambda/${aws_lambda_function.event_listener.function_name}"
 
   retention_in_days = 30
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# LAMBDA FUNCTION
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_lambda_function" "function" {
-  function_name    = "event-listener"
-  s3_bucket        = aws_s3_bucket.lambda_bucket.id
-  s3_key           = aws_s3_object.lambda_bundle.key
-  runtime          = "dotnet6"
-  handler          = "EventListenerLambda::EventListenerLambda.Function::FunctionHandler"
-  source_code_hash = data.archive_file.lambda_archive.output_base64sha256
-  role             = aws_iam_role.lambda_function_role.arn
-  timeout          = 30
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ resource "aws_iam_role_policy" "lambda_role_logs_policy" {
         "logs:PutLogEvents"
       ],
       "Effect": "Allow",
-      "Resource": "arn:aws:logs:eu-west-1:513702461716:log-group:/aws/lambda/event-listener:*"
+      "Resource": "${aws_cloudwatch_log_group.event_listener_log_group.arn}"
     }
   ]
 }
@@ -211,12 +211,12 @@ EOF
 resource "aws_lambda_event_source_mapping" "event_listener_event_source" {
     event_source_arn = "${aws_sqs_queue.event_sqs.arn}"
     enabled          = true
-    function_name    = "${aws_lambda_function.function.arn}"
+    function_name    = "${aws_lambda_function.event_listener.arn}"
     batch_size       = 1
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# DynamoDB Table
+# DYNAMODB TABLE
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_dynamodb_table" "event_storage" {
@@ -253,7 +253,7 @@ EOF
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Kinesis Stream
+# KINESIS STREAM
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_kinesis_stream" "kinesis_event_stream" {
@@ -267,7 +267,7 @@ resource "aws_dynamodb_kinesis_streaming_destination" "kinesis_event_stream_dest
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Kinesis Data Firehose Delivery Stream
+# KINESIS DATA FIREHOSE DELIVERY STREAM
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_kinesis_firehose_delivery_stream" "event_delivery_stream" {
@@ -287,7 +287,7 @@ resource "aws_kinesis_firehose_delivery_stream" "event_delivery_stream" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# IAM Role for Kinesis Data Firehose
+# IAM ROLE FOR KINESIS DATA FIREHOSE
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_iam_role" "firehose_role" {
@@ -359,7 +359,7 @@ EOF
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# S3 Bucket 
+# S3 BUCKET 
 # ---------------------------------------------------------------------------------------------------------------------
 
 resource "aws_s3_bucket" "events_bucket" {
