@@ -197,7 +197,7 @@ resource "aws_iam_role_policy" "lambda_role_logs_policy" {
         "logs:PutLogEvents"
       ],
       "Effect": "Allow",
-      "Resource": "*"
+      "Resource": "arn:aws:logs:eu-west-1:513702461716:log-group:/aws/lambda/event-listener:*"
     }
   ]
 }
