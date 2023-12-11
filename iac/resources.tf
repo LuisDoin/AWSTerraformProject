@@ -1,4 +1,31 @@
 # ---------------------------------------------------------------------------------------------------------------------
+# SNS TOPIC
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_sns_topic" "event_sns" {
+    name = "event-sns"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# SQS QUEUE
+# ---------------------------------------------------------------------------------------------------------------------
+
+resource "aws_sqs_queue" "event_sqs" {
+    name = "event-sqs"
+    redrive_policy  = "{\"deadLetterTargetArn\":\"${aws_sqs_queue.event_sqs_dlq.arn}\",\"maxReceiveCount\":5}"
+    visibility_timeout_seconds = 300
+    kms_master_key_id = aws_kms_key.kms_key.id
+
+    tags = {
+        Environment = "dev"
+    }
+}
+
+resource "aws_sqs_queue" "event_sqs_dlq" {
+    name = "event-sqs-dlq"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
 # KMS KEY
 # ---------------------------------------------------------------------------------------------------------------------
 
@@ -24,33 +51,6 @@ resource "aws_kms_key_policy" "kms_policy" {
     ]
     Version = "2012-10-17"
   })
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# SNS TOPIC
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_sns_topic" "event_sns" {
-    name = "event-sns"
-}
-
-# ---------------------------------------------------------------------------------------------------------------------
-# SQS QUEUE
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_sqs_queue" "event_sqs" {
-    name = "event-sqs"
-    redrive_policy  = "{\"deadLetterTargetArn\":\"${aws_sqs_queue.event_sqs_dlq.arn}\",\"maxReceiveCount\":5}"
-    visibility_timeout_seconds = 300
-    kms_master_key_id = aws_kms_key.kms_key.id
-
-    tags = {
-        Environment = "dev"
-    }
-}
-
-resource "aws_sqs_queue" "event_sqs_dlq" {
-    name = "event-sqs-dlq"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -315,15 +315,14 @@ resource "aws_iam_role_policy" "firehose_kinesis_policy" {
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "*",
+      "Action": [
+        "kinesis:DescribeStream",
+        "kinesis:GetRecords",
+        "kinesis:GetShardIterator",
+        "kinesis:ListStreams",
+        "kms:Decrypt"
+      ],
       "Resource": "${aws_kinesis_stream.kinesis_event_stream.arn}"
-    },
-    {
-       "Action": [
-         "kms:Decrypt"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"  
     }
   ]
 }
@@ -353,13 +352,6 @@ resource "aws_iam_role_policy" "firehose_s3_policy" {
         "${aws_s3_bucket.events_bucket.arn}",
         "${aws_s3_bucket.events_bucket.arn}/*"
       ]
-    },
-    {
-       "Action": [
-         "kms:Decrypt"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"  
     }
   ]
 }
