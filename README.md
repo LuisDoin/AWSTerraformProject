@@ -5,7 +5,7 @@ In this repository we build the following infrastructure within AWS using terraf
 
 <p align="center">
   
-  <img width="450" src="https://github.com/LuisDoin/AWSTerraformProject/assets/60629494/7278d9ee-38ed-4ec8-804b-b1a248f2d64e">
+  <img width="500" src="https://github.com/LuisDoin/AWSTerraformProject/assets/60629494/5799b5fb-8ac2-422b-85ea-4924577ff621">
   
 </p>
 
