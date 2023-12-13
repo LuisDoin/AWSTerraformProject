@@ -1,6 +1,17 @@
 # AWS Terraform Project
 
-## Spinning Up The Infrastrucure
+In this repository we build the following infrastructure within AWS using terraform
+
+
+<p align="center">
+  
+  <img width="450" src="https://github.com/LuisDoin/AWSTerraformProject/assets/60629494/7278d9ee-38ed-4ec8-804b-b1a248f2d64e">
+  
+</p>
+
+## Running Locally
+
+### Spinning Up The Infrastrucure
 
 After clonning the repository, set up your aws credentials in your credentials file and move to the iac folder 
 
@@ -14,7 +25,7 @@ After setting up the changes the console will ask for your confirmation. Type
 
 `yes`
 
-## Publishing And Fetching Events
+### Publishing And Fetching Events
 
 Once the infrastructure is up and running, move to the EventListenerLambda folder
 
